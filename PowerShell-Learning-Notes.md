@@ -82,26 +82,26 @@ REMARKS
         -- To view the Help topic for this cmdlet online, type: "Get-Help Get-Process -Online" or
            go to https://go.microsoft.com/fwlink/?LinkID=2096814.
 ```
-> Google search of command will take you to better Microsoft dccumentation with examples.
+> Google search of command will take you to better Microsoft documentation with examples.
 
 
 **PowerShell ISE and ISE Mode in Visual Studio Code**
 
 PowerShell ISE (Integrated Scripting Environment) is a tool that divides the window into three sections. It allows for creating PowerShell scripts, provides a PowerShell window, and displays a listing of cmdlets with helpful details and autocomplete suggestions.
 
-* In VSCode ```Toggle ISE Mode``` will emulate PowerShell Intergrated Scripting Environment and show cmdlets on the left that opens help in browser.
+* In VSCode ```Toggle ISE Mode``` will emulate PowerShell integrated Scripting Environment and show cmdlets on the left that opens help in browser.
 * Tab command completion in the PowerShell terminal
 
 ### Predicting Command Behaviour
 ```PowerShell
-owerShell> Stop-Process 15078 -WhatIf
+PowerShell> Stop-Process 15078 -WhatIf
 What if: Performing the operation "Stop-Process" on target "zsh (15078)".
 ```
 ```-WhatIf``` shows what would happen if you execute the command
 
 
 ```PowerShell
-owerShell> Stop-Process 15078 --Confirm
+PowerShell> Stop-Process 15078 --Confirm
 ```
 Asks for confirmation before running command
 
@@ -470,9 +470,20 @@ $PowerShell> A=Get-Command |Where-Object {$_.Source -eq "posh-git"}
 PowerShell> $A.Count
 ```
 
+### Custom Error Messages / Exception handling
 
-### Error Messages
+```PowerShell
+try {
+    Invalid-Command
+}
+catch {
+    Write-Host("`r`n ERROR: It looks like a bad command. `r`n")
+}
 
-### Custom Error Messages 
+```
 
+```PowerShell 
+Invoke-Expression <expr>
+``` 
+can be used to execute dynamically generated code in a variable. try / catch essential with this.
 
