@@ -405,8 +405,71 @@ PowerShell> $Months.2
 February
 ```
 
-
 ### Modules Introduction
+Modules makes PowerShell extensible.
+
+Cmdlets for products come in Modules.
+
+How many built in commands do I have?
+```PowerShell
+PowerShell> $A = Get-Command   
+PowerShell> $A.Count
+320
+```
+
+What modules do I have loaded by default?
+```PowerShell
+PowerShell> Get-Module  
+                                       
+ModuleType Version    PreRelease Name                                ExportedCommands
+---------- -------    ---------- ----                                ----------------
+Manifest   7.0.0.0               Microsoft.PowerShell.Management     {Add-Content, Clear-Content, Clear-Item, Clear-ItemProperty…}
+Manifest   7.0.0.0               Microsoft.PowerShell.Utility        {Add-Member, Add-Type, Clear-Variable, Compare-Object…}
+Script     0.2.0                 PowerShellEditorServices.Commands   {Clear-Host, ConvertFrom-ScriptExtent, ConvertTo-ScriptExtent, …
+Script     2.4.4      beta4      PSReadLine                          {Get-PSReadLineKeyHandler, Get-PSReadLineOption, Remove-PSReadL…
+
+PowerShell> Import-Module Hyper-V
+Import-Module: The specified module 'Hyper-V' was not loaded because no valid module file was found in any module directory.
+```
+##### Cross-platform Modules to play with
+
+```PowerShell
+PowerShell> Find-Module -Tag cross-platform | Select-Object Name, Version, Description
+
+Name                                    Version  Description
+----                                    -------  -----------
+Pode                                    2.12.1   A Cross-Platform PowerShell framework for creating web servers to host REST APIs and Websites. Pode also has support for bein…
+PSCompression                           3.1.0    Zip, tar, and string compression utilities for PowerShell!
+ClipboardText                           0.1.8    Support for text-based clipboard operations for PowerShell Core (cross-platform) and older versions of Windows PowerShell
+Catesta                                 2.27.0   Catesta is a PowerShell module project generator. It uses templates to rapidly scaffold test and build integration for a vari…
+POSHTML5                                0.1.5    These functions lets you create an HTML5  web page with dynamic table and charts, easily.
+PSClass                                 0.1.0    PowerShell module to help determine class dependencies, and the order to import them
+Monocle                                 1.3.4    PowerShell Web Automation module, made to make automating and testing websites easier
+BootstrapPowerShellCore                 1.0.6    Functions to install PowerShell Core on a Remote Host. Opitionally configure pwsh PSRemoting on the Remote Host. GitHub: http…
+PowerTree                               2.1.2    Advanced directory tree visualization tool with powerful filtering and display options. More information: https://github.com/…
+PoshHosts                               0.2.2    PoshHosts is a Cross-Platform module that allows you to control the hosts file from the Command Line
+PowerShell.MCP                          1.7.3    The universal MCP server for Claude Code and other MCP-compatible clients. One installation gives AI access to 10,000+ PowerS…
+Parcel                                  0.2.0    A Cross-Platform PowerShell package/module installation and provisioning tool.
+Pode.Yaml                               1.0.0    A YAML Request and Response parser extension module for the Pode web server (v1.3.0+)
+PSPredictor                             1.3.0    Supercharge your command line productivity with intelligent tab completion for 26+ CLI tools. Supports Git, Docker, npm, kube…
+EmojiTools                              1.18.5   EmojiTools provides powerful emoji search and management capabilities with local dataset caching, fuzzy search, and safe comm…
+SecretManagement.VMware.CloudFoundation 0.2505.7 A Cross-Platform SecretManagement Vault extension for VMware Cloud Foundation.
+SmartLogAnalyzer                        1.2.1    SmartLogAnalyzer helps sysadmins and developers parse and analyze logs intelligently across platforms with optional GUI.
+PSEpoch                                 0.1.2    PSEpoch is a basic script module for converting between Unix timestamps and DateTime objects in PowerShell Core.
+KeyTabTools                             1.3.1    Cross-platform PowerShell utility for generating offline Kerberos keytab files. Supports RC4-HMAC, AES-128, and AES-256 encry…
+rwDirTools                              1.1.1    Utilities for selecting and creating directories with interactive and non-interactive modes.
+ElektoMailPosh                          0.2.0    Lightweight SMTP email module for PowerShell. Zero dependencies, environment-based configuration, automatic retry with expone…
+
+```
+
+What cmdlets in are posh-git?
+```PowerShell
+PowerShell> Get-Command -Module posh-git                        
+PowerShell> Get-Command |Where-Object {$_.Source -eq "posh-git"}
+$PowerShell> A=Get-Command |Where-Object {$_.Source -eq "posh-git"}
+PowerShell> $A.Count
+```
+
 
 ### Error Messages
 
