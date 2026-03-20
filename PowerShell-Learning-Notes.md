@@ -122,7 +122,7 @@ Get-Command <Cmdlet> | Select-Object *
 Get-Command <Cmdlet> |  Where-Object {$_.Definition -Like "*confirm*"}
 ```
 
-### Term Not Recogised Error
+### Term Not Recognised Error
 Similar to Bad command or file name.
 
 Find the correct command with wildcarding
@@ -134,9 +134,170 @@ Get-Command Get-Pr*
 ## PowerShell Cmdlets
 
 
-### Commandly Used Cmdlets
+### Commonly Used Cmdlets
+
+```PowerShell
+Get-Service
+PowerShell> Get-Process code | Select-Object ProcessName, CPU
+PS /Users/edwin.boatswain/Documents/Learning/PowerShell> Get-Process code | Select-Object *               
+```
+```Select-Object *``` lets us see all available fields
+
+All things about PowerShell process
+```PowerShell
+Get-ChildItem <-- like old DIR cmd>
+```
+
+DOS commands work
+```
+cd\
+cd Data
+md
+Copy-Item Data/7-4.htm Data2
+```
+
+> Note: Powershell uses path style of host OS for cross compatibility use
+```cd (Join-Path $HOME "Desktop")``` to target the Desktop directory under the home directory for example
 
 ### Objects & Attributes
+
+```PowerShell
+PowerShell> Get-Process pwsh | Select-Object *        
+
+Name                       : pwsh
+Id                         : 19648
+PriorityClass              : Normal
+FileVersion                : 
+HandleCount                : 0
+WorkingSet                 : 242597888
+PagedMemorySize            : 0
+PrivateMemorySize          : 0
+VirtualMemorySize          : 979009536
+TotalProcessorTime         : 00:01:41.4445040
+SI                         : 19648
+Handles                    : 0
+VM                         : 447655608320
+WS                         : 242597888
+PM                         : 0
+NPM                        : 0
+Path                       : /opt/homebrew/Cellar/powershell/7.6.0/libexec/pwsh
+CommandLine                : 
+Parent                     : System.Diagnostics.Process (Code Helper)
+Company                    : 
+CPU                        : 101.44473
+ProductVersion             : 
+Description                : 
+Product                    : 
+__NounName                 : Process
+SafeHandle                 : Microsoft.Win32.SafeHandles.SafeProcessHandle
+Handle                     : 11448
+BasePriority               : 0
+ExitCode                   : 
+HasExited                  : False
+StartTime                  : 20/03/2026 14:13:01
+ExitTime                   : 
+MachineName                : .
+MaxWorkingSet              : 9223372036854775807
+MinWorkingSet              : 0
+Modules                    : {System.Diagnostics.ProcessModule (pwsh)}
+NonpagedSystemMemorySize64 : 0
+NonpagedSystemMemorySize   : 0
+PagedMemorySize64          : 0
+PagedSystemMemorySize64    : 0
+PagedSystemMemorySize      : 0
+PeakPagedMemorySize64      : 0
+PeakPagedMemorySize        : 0
+PeakWorkingSet64           : 0
+PeakWorkingSet             : 0
+PeakVirtualMemorySize64    : 0
+PeakVirtualMemorySize      : 0
+PriorityBoostEnabled       : False
+PrivateMemorySize64        : 0
+ProcessorAffinity          : 
+SessionId                  : 19648
+StartInfo                  : 
+Threads                    : {77279712, 1796944096, 1798566112, 1800188128…}
+VirtualMemorySize64        : 447655608320
+EnableRaisingEvents        : False
+StandardInput              : 
+StandardOutput             : 
+StandardError              : 
+WorkingSet64               : 242597888
+SynchronizingObject        : 
+MainModule                 : System.Diagnostics.ProcessModule (pwsh)
+MainWindowHandle           : 0
+MainWindowTitle            : 
+Responding                 : True
+ProcessName                : pwsh
+PrivilegedProcessorTime    : 00:01:15.5463000
+UserProcessorTime          : 00:00:25.8986730
+Site                       : 
+Container                  : 
+```
+
+Selected Attributes
+```PowerShell
+PowerShell> Get-Process pwsh | Select-Object Name, Path
+
+Name Path
+---- ----
+pwsh /opt/homebrew/Cellar/powershell/7.6.0/libexec/pwsh
+```
+
+***Format-List vs Format-Table***
+```
+PowerShell> Get-Date | Select-Object *
+
+DisplayHint : DateTime
+DateTime    : Friday, 20 March 2026 14:56:45
+Date        : 20/03/2026 00:00:00
+Day         : 20
+DayOfWeek   : Friday
+DayOfYear   : 79
+Hour        : 14
+Kind        : Local
+Millisecond : 77
+Microsecond : 711
+Nanosecond  : 0
+Minute      : 56
+Month       : 3
+Second      : 45
+Ticks       : 639096154050777110
+TimeOfDay   : 14:56:45.0777110
+Year        : 2026
+
+PowerShell> Get-Date | Select-Object * | Format-Table
+
+DisplayHint DateTime                       Date                Day DayOfWeek DayOfYear Hour  Kind Millisecond Microsecond
+----------- --------                       ----                --- --------- --------- ----  ---- ----------- -----------
+   DateTime Friday, 20 March 2026 14:57:54 20/03/2026 00:00:00  20    Friday        79   14 Local         625         476
+```
+
+> Shortcuts for format table and format list
+`FL` and `FT`
+
+**All virtual machines on a hyper-v server vs specific
+```PowerShell
+PowerShell> Get-VM -ComputerName HyperV
+PowerShell> Get-VM VM1 -ComputerName HyperV
+PowerShell> Get-VM -ComputerName HyperV | Select-Object *
+```
+
+**Accessing Attributes in Brackets {}**
+How to access? 
+```PowerShell
+PowerShell> Get-VM -ComputerName HyperV | Select-Object -ExpandProperty HardDrives
+
+```
+
+Results in bracketed list expanded to named table
+> **TODO** Find an example that works on Mac / cross platform
+
+***Select attributes of expanded object***
+```
+PowerShell> Get-VM -ComputerName HyperV | Select-Object -ExpandProperty HardDrives | Select-Object Name, ID
+
+```
 
 ### Variables, Arrays & Hash Tables
 
