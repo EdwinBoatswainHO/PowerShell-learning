@@ -290,8 +290,14 @@ PowerShell> Get-VM -ComputerName HyperV | Select-Object -ExpandProperty HardDriv
 
 ```
 
-Results in bracketed list expanded to named table
-> **TODO** Find an example that works on Mac / cross platform
+Results in bracketed list expanded to named table e.g.
+```PowerShell
+PowerShell> Get-Culture | Select-Object Parent, Name  -ExpandProperty OptionalCalendars | Select-Object  Parent,Name, IsReadOnly
+
+Parent Name  IsReadOnly
+------ ----  ----------
+en     en-GB      False
+```
 
 ***Select attributes of expanded object***
 ```
