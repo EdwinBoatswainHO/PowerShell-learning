@@ -487,3 +487,182 @@ Invoke-Expression <expr>
 ``` 
 can be used to execute dynamically generated code in a variable. try / catch essential with this.
 
+## Basic Scripting
+
+### Building a script
+```
+# HelloWorld.ps1
+<#
+Multiline comments
+look like this.
+#>
+
+CLS
+Write-Host "Hello World!"
+```
+
+Basically favourite editor and save as text. Avoid encodings.
+
+### Configuring execution
+An execution policy may prevent you from running powershell scripts (Windows probably)
+
+```PowerShell
+Get-ExecutionPolicy
+
+Set-ExecutionPolicy Unrestricted
+```
+
+You can also choose options to make sure scripts are signed.
+
+```PowerShell
+PowerShell> Get-ExecutionPolicy -List
+
+        Scope ExecutionPolicy
+        ----- ---------------
+MachinePolicy    Unrestricted
+   UserPolicy    Unrestricted
+      Process    Unrestricted
+  CurrentUser    Unrestricted
+ LocalMachine    Unrestricted
+ ```
+
+### Creating a function
+
+```PowerShell
+#HelloWorld2.ps1
+
+Function Show-HelloWorld {
+    Write-Host "Hello, World!"
+}
+
+CLS
+Show-HelloWorld
+```
+
+### Silencing Errors
+```PowerShell
+Get-ChildItem -recurse -ErrorAction SilentlyContinue
+```
+
+`Get-Help` on the command shows valid `-ErrorActions`s
+```
+
+```PowerShell
+PS > $ErrorActionPreference='SilentlyContinue' 
+PS > 20/0
+PS >
+```
+Suppress errors for things that aren't cmdlets
+
+
+### Maths
+BODMAS
+```PowerShell
+# Using .net class
+[Math]::Pow(2, 3)
+```
+
+Get all the methods in the Math class
+
+```PowerShell
+[Math].GetMethods() | Select-Object Name -Unique
+```
+
+### Comparisons
+```PowerShell
+#Comparison Operators
+$A -eq $B
+$A -ne $B
+$A -gt $B
+$A -lt $B
+$A -ge $B
+$A -le $B   
+
+If ($A -ne $B) {
+    Write-Host "A and B are not equal."
+} Else {
+    Write-Host "A and B are equal."
+}
+```
+
+String Comparisons
+
+```PowerShell
+Get-Process | Where-Object {$_Name -Like "*PowerShell* "}
+Get-Process | Where-Object {$_Name -NotLike "*PowerShell* "}
+Get-Process | Where-Object {$_Name -Match "*PowerShell* "}
+
+$A = "Hello World"
+$A -match "World"
+# replacement operator
+$A -replace "World", "Everyone"
+$B = $A -replace "World", "Everyone"
+
+$A = "PowerShell"
+$A -ccontains "Shell" # false because has to match
+$A -NotContains "Shell" # true because it matches
+```
+
+### Assignment 
+```PowerShell
+$A = 5
+$B = "Hello"
+$A += 5
+$B += " World" # String concatenation
+$B *= 2 # String repetition
+$A -= 3
+$A *= 2
+$A /= 4
+$A %= 3 # Modulus operator
+
+```
+
+### Logic
+
+```PowerShell
+(1 -eq 1 -and 2 -eq 2) # Logical AND
+(1 -eq 1 -or 2 -eq 3) # Logical OR
+(1 -eq 1 -xor 2 -eq 3) # Logical XOR
+-not (1 -eq 2) # Logical NOT    
+!(1 -eq 2) # Logical NOT        
+```
+
+We saw earlier that we can use these operators on strings.
+
+### Interactive Authentication
+Sometimes you need to run a command against a remote system.
+
+
+```PowerShell
+PS> $Cred = Get-Credential
+
+PowerShell credential request
+Enter your credentials.
+User: Hello
+Password for user Hello: *****
+
+PS> echo $Cred 
+
+UserName                     Password
+--------                     --------
+Hello    System.Security.SecureString
+
+PS> Enter-PSSession -Computername HyperV -Credential $Cred
+[HyperV]: PS> Exit-PSSession
+```
+
+### Automatic Authentication
+
+```PowerShell
+$MyPassword = Read-Host -AsSecureString  | ConvertFrom-SecureString #convert secure string to encrypted
+$MyPassword | Out-File -FilePath "MyPassword.txt"
+
+# ...
+
+# Get password from encrypted file
+user="UserName"
+$File = "MyPassword.txt"
+$MyCredential = New-Object System.Management.Automation.PSCredential($user, (Get-Content $File | ConvertTo-SecureString))
+$MyCredential.GetNetworkCredential -ArgumentList $User, (Get-Content $File | ConvertTo-SecureString) 
+
+```
