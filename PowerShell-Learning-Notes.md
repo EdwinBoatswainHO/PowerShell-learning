@@ -125,7 +125,7 @@ Get-Command <Cmdlet> |  Where-Object {$_.Definition -Like "*confirm*"}
 ### Term Not Recognised Error
 Similar to Bad command or file name.
 
-Find the correct command with wildcarding
+Find the correct command with wildcards
 ```PowerShell
 Get-Command Get-Pr*
 ```
@@ -306,6 +306,105 @@ PowerShell> Get-VM -ComputerName HyperV | Select-Object -ExpandProperty HardDriv
 ```
 
 ### Variables, Arrays & Hash Tables
+
+#### Variables
+
+Variables always start with `$`
+```console
+PowerShell>$A = "1"
+PowerShell>$A
+1
+PowerShell> Write-Host $A
+1
+PowerShell> Write-Host "The value of variable A is $A"
+The value of variable A is 1
+PowerShell> $B=1
+PowerShell> $A + $B
+11
+PowerShell> $A=1
+PowerShell> $B=1
+PowerShell> $A + $B
+2
+PowerShell> $FirstName="Miles"
+PowerShell> $LastName="O'Brien"
+PowerShell> "$FirstName $LastName"
+Miles O'Brien
+PowerShell> 
+PowerShell> 
+PowerShell> 
+```
+
+##### Casting
+```PowerShell
+$A="1"
+$B="1"
+[Int]$1
+1
+[Int]$A + [Int]$B
+2
+```
+
+#### Arrays
+
+You can set variables to numbers, strings and arrays
+
+```PowerShell
+PowerShell> $MyArray
+A
+B
+C
+D
+PowerShell> Write-Host $MyArray                       
+A B C D
+PowerShell> Write-Host $MyArray[3]
+D
+```
+
+Cmdlet output assigned to a variable is an array
+```
+PowerShell> $X=Get-Process
+PowerShell> $X[1]         
+
+ NPM(K)    PM(M)      WS(M)     CPU(s)      Id  SI ProcessName
+ ------    -----      -----     ------      --  -- -----------
+      0     0.00      49.86       0.61     792   1 AccessibilityUIServer
+```
+
+#### Hash Tables
+```PowerShell
+PowerShell> $Months=@{1="January"; 2="February"; 3="March"}
+$Months
+
+Name                           Value
+----                           -----
+3                              March
+2                              February
+1                              January
+
+
+PowerShell> $Months.Add(4,"April")                         
+PowerShell> $Months                                        
+
+Name                           Value
+----                           -----
+4                              April
+3                              March
+2                              February
+1                              January
+
+PowerShell> $Months.Remove(4)     
+PowerShell> $Months          
+
+Name                           Value
+----                           -----
+3                              March
+2                              February
+1                              January
+
+PowerShell> $Months.2        
+February
+```
+
 
 ### Modules Introduction
 
