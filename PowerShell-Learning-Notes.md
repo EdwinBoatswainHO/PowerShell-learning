@@ -666,3 +666,242 @@ $MyCredential = New-Object System.Management.Automation.PSCredential($user, (Get
 $MyCredential.GetNetworkCredential -ArgumentList $User, (Get-Content $File | ConvertTo-SecureString) 
 
 ```
+
+## Enhancing Scripts
+
+### Passing Variables to functions
+```PowerShell
+Function Get-MyVMs($Server) {
+    # ...
+}
+
+Get-MyVMs -Server "MyServer"
+
+
+Get-MyVMs -Server "MyServer"
+
+Functions Get-MyVMs($Server, $VM) {
+
+}   
+
+Get-MyVMs -Server "MyServer" -VM "MyVM"
+```
+> We can also use positional parameter passing
+
+
+### Global & Local Variables
+* Variables declared in functions are local to functions
+* Global Variables are declared as `$Global:VarName` which makes it global even if declared in a function
+
+```PowerShell
+Function Get-GlobalData {
+    $Global:MyData = "some data"
+}
+$MyData
+```
+> Probably better to use the return statement
+
+### Loops
+#### For
+```PowerShell
+For ($i = 0; $i -lt 5; $i++) {
+    Write-Host "Iteration: $i"
+}
+```
+
+#### Do .. While
+```PowerShell
+$i = 0
+Do {
+    Write-Host "Iteration: $i"
+    $i++
+
+} While ($i -lt 5) 
+```
+#### Do ... Until
+```PowerShell
+Do {
+    Write-Host "Iteration: $i"
+    $i++
+} Until ($i -ge 5)
+```
+
+#### While ...
+```PowerShell
+$i = 0
+while ($i -lt 5) {
+    Write-Host "Iteration: $i"
+    $i++
+    
+}
+```
+
+#### Do while with break
+```PowerShell
+$I = 0
+Do {
+    if ($I -eq 2) {
+        Break
+    }
+    $I++
+} While ($I -gt 0)
+
+```
+
+#### ForEach
+```PowerShell
+$Servers = @("Server1", "Server2", "Server3")
+foreach ($Server in $Servers) {
+    Write-Host "Processing: $Server"
+}
+```
+
+### Progress Bars
+```PowerShell
+for ($N = 1; $N -le 100; $N++) {
+    #Write-Progress -ID 0 "$N% Complete"
+    Write-Progress -Activity "Task in progress" -Status "Processing number $N" -PercentComplete ($N)    
+    Start-Sleep -Milliseconds 250
+}
+```
+Nested progress
+```PowerShell
+foreach ($N in 1..100) {
+    Write-Progress -ID 0 -Activity "Overall progress"  -Status "$N%" -PercentComplete ($N)
+    foreach ($M in 1..100) {
+        Write-Progress -ID 1 -Activity "Inner loop progress" -Status "Processing number $M" -PercentComplete ($M)
+        Start-Sleep -Milliseconds 100
+    }    
+    Start-Sleep -Milliseconds 250
+}
+```
+
+### Switch Statements
+```PowerShell
+Switch ($A) {
+    "A" { Write-Host "You entered A" }
+    "B" { Write-Host "You entered B" }
+    "C" { Write-Host "You entered C" }
+    "D" { Write-Host "You entered D" }
+    Default { Write-Host "Invalid input. Please enter a letter from A to D." }
+}
+```
+> This is not my code...
+```PowerShell
+Switch ($A, $B) {
+    ("A", "A") { Write-Host "You entered A and A" }
+    ("A", "B") { Write-Host "You entered A and B" }
+    ("B", "A") { Write-Host "You entered B and A" }
+    ("B", "B") { Write-Host "You entered B and B" }
+    Default { Write-Host "Invalid input. Please enter letters from A to D." }
+}
+```
+### Sorting PowerShell Output
+
+```PowerShell
+Get-Process | Sort-Object CPU -desc
+```
+
+```PowerShell
+PS > Get-Process | Sort-Object CPU -desc | Select-Object ProcessName, CPU -First 10
+
+ProcessName                            CPU
+-----------                            ---
+pwsh                             10757.896
+Microsoft Edge Helper (Renderer)  4305.992
+Microsoft Edge Helper             3624.990
+Microsoft Edge Helper (Renderer)  1873.284
+Code Helper (Renderer)            1570.690
+Microsoft Edge                    1100.531
+VTDecoderXPCService                813.639
+Code Helper (GPU)                  732.497
+Code                               645.326
+duetexpertd                        536.902
+```
+
+Count PowerShells
+```PowerShell
+PS > $A = Get-Process | Where-Object {$_.Name -eq 'pwsh'}
+PS > $A.count                                            
+1
+```
+
+### Building Modules & Stand-Along Functions
+
+```PowerShell
+# Module file has extension .psm1
+Function Get-MyVMs($Server) {
+    Write-Host "Getting VMs from $Server"
+    # Simulate getting VMs
+    return @("VM1", "VM2", "VM3")
+}
+Export-ModuleMember -Function 'Get-MyVMs'
+```
+* Modules are stored in PowerShell installation Modules folder
+* Create a module for your module
+* Module name must match the filename minus extension
+* Get-Module -ListAvailable will show modules
+
+```PowerShell
+Import-Module MyModule
+$VMs = Get-MyVMs -Server "Server1"
+```
+
+Alternate form seems to be
+```PowerShell
+Import-Module .\MyModule.psm1
+```
+
+### Command line args (thanks co-pilot)
+#### Named
+```PowerShell
+param (
+   [string]$Server = "http://defaultserver",
+   [Parameter(Mandatory = $true)][string]$Username,
+   [string]$Password = $( Read-Host "Enter password" ),
+   [switch]$Force
+)
+Write-Host "Server: $Server"
+Write-Host "Username: $Username"
+if ($Force) { Write-Host "Force mode enabled" }
+```
+
+```PowerShell
+\script.ps1 -Server "http://otherserver" -Username admin -Force
+```
+
+#### Positional
+```PowerShell
+# script.ps1
+if ($args.Count -lt 2) {
+   Write-Host "Usage: script.ps1 <SourcePath> <DestinationPath>"
+   exit
+}
+$source = $args[0]
+$destination = $args[1]
+Copy-Item -Path $source -Destination $destination -Recurse
+```
+
+```PowerShell
+\script.ps1 "C:\Source" "D:\Backup"
+```
+
+### Varargs (thanks co-pilot)
+```PowerShell
+function Show-Args {
+    param(
+        [Parameter(ValueFromRemainingArguments = $true)]
+        [object[]]$Items
+    )
+
+    foreach ($item in $Items) {
+        Write-Host "Item: $item"
+    }
+}
+
+Show-Args "apple" 42 $true
+
+Item: apple
+Item: 42
+Item: True
+```
