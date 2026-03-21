@@ -6,7 +6,43 @@ Based on the O'Reilly course: <br>
 Brien Posey<br>](https://learning.oreilly.com/course/practical-windows-powershell/9780137905256/)
 
 
-## Basic Syntax
+<!-- vscode-markdown-toc -->
+* 1. [Basic Syntax](#BasicSyntax)
+	* 1.1. [Getting Help](#GettingHelp)
+	* 1.2. [Predicting Command Behaviour](#PredictingCommandBehaviour)
+	* 1.3. [Maths](#Maths)
+	* 1.4. [Comparisons](#Comparisons)
+	* 1.5. [Assignment](#Assignment)
+	* 1.6. [Logic](#Logic)
+	* 1.7. [Interactive Authentication](#InteractiveAuthentication)
+	* 1.8. [Automatic Authentication](#AutomaticAuthentication)
+* 2. [Enhancing Scripts](#EnhancingScripts)
+	* 2.1. [Passing Variables to functions](#PassingVariablestofunctions)
+	* 2.2. [Global & Local Variables](#GlobalLocalVariables)
+	* 2.3. [Loops](#Loops)
+		* 2.3.1. [For](#For)
+		* 2.3.2. [Do .. While](#Do..While)
+		* 2.3.3. [Do ... Until](#Do...Until)
+		* 2.3.4. [While ...](#While...)
+		* 2.3.5. [Do while with break](#Dowhilewithbreak)
+		* 2.3.6. [ForEach](#ForEach)
+	* 2.4. [Progress Bars](#ProgressBars)
+	* 2.5. [Switch Statements](#SwitchStatements)
+	* 2.6. [Sorting PowerShell Output](#SortingPowerShellOutput)
+	* 2.7. [Building Modules & Stand-Along Functions](#BuildingModulesStand-AlongFunctions)
+	* 2.8. [Command line args (thanks co-pilot)](#Commandlineargsthanksco-pilot)
+		* 2.8.1. [Named](#Named)
+		* 2.8.2. [Positional](#Positional)
+	* 2.9. [Varargs (thanks co-pilot)](#Varargsthanksco-pilot)
+
+<!-- vscode-markdown-toc-config
+	numbering=true
+	autoSave=true
+	/vscode-markdown-toc-config -->
+<!-- /vscode-markdown-toc -->
+
+
+##  1. <a name='BasicSyntax'></a>Basic Syntax
 cmdlet - official name for PowerShell commands
 
 Verb-Noun combination
@@ -27,7 +63,7 @@ PowerShell> Get-Process OneDrive
 
 ```
 
-### Getting Help
+###  1.1. <a name='GettingHelp'></a>Getting Help
 
 ** Get all cmdlets that start with Get **
 
@@ -92,7 +128,7 @@ PowerShell ISE (Integrated Scripting Environment) is a tool that divides the win
 * In VSCode ```Toggle ISE Mode``` will emulate PowerShell integrated Scripting Environment and show cmdlets on the left that opens help in browser.
 * Tab command completion in the PowerShell terminal
 
-### Predicting Command Behaviour
+###  1.2. <a name='PredictingCommandBehaviour'></a>Predicting Command Behaviour
 ```PowerShell
 PowerShell> Stop-Process 15078 -WhatIf
 What if: Performing the operation "Stop-Process" on target "zsh (15078)".
@@ -555,7 +591,7 @@ PS >
 Suppress errors for things that aren't cmdlets
 
 
-### Maths
+###  1.3. <a name='Maths'></a>Maths
 BODMAS
 ```PowerShell
 # Using .net class
@@ -568,7 +604,7 @@ Get all the methods in the Math class
 [Math].GetMethods() | Select-Object Name -Unique
 ```
 
-### Comparisons
+###  1.4. <a name='Comparisons'></a>Comparisons
 ```PowerShell
 #Comparison Operators
 $A -eq $B
@@ -603,7 +639,7 @@ $A -ccontains "Shell" # false because has to match
 $A -NotContains "Shell" # true because it matches
 ```
 
-### Assignment 
+###  1.5. <a name='Assignment'></a>Assignment 
 ```PowerShell
 $A = 5
 $B = "Hello"
@@ -617,7 +653,7 @@ $A %= 3 # Modulus operator
 
 ```
 
-### Logic
+###  1.6. <a name='Logic'></a>Logic
 
 ```PowerShell
 (1 -eq 1 -and 2 -eq 2) # Logical AND
@@ -629,7 +665,7 @@ $A %= 3 # Modulus operator
 
 We saw earlier that we can use these operators on strings.
 
-### Interactive Authentication
+###  1.7. <a name='InteractiveAuthentication'></a>Interactive Authentication
 Sometimes you need to run a command against a remote system.
 
 
@@ -651,7 +687,7 @@ PS> Enter-PSSession -Computername HyperV -Credential $Cred
 [HyperV]: PS> Exit-PSSession
 ```
 
-### Automatic Authentication
+###  1.8. <a name='AutomaticAuthentication'></a>Automatic Authentication
 
 ```PowerShell
 $MyPassword = Read-Host -AsSecureString  | ConvertFrom-SecureString #convert secure string to encrypted
@@ -667,9 +703,9 @@ $MyCredential.GetNetworkCredential -ArgumentList $User, (Get-Content $File | Con
 
 ```
 
-## Enhancing Scripts
+##  2. <a name='EnhancingScripts'></a>Enhancing Scripts
 
-### Passing Variables to functions
+###  2.1. <a name='PassingVariablestofunctions'></a>Passing Variables to functions
 ```PowerShell
 Function Get-MyVMs($Server) {
     # ...
@@ -689,7 +725,7 @@ Get-MyVMs -Server "MyServer" -VM "MyVM"
 > We can also use positional parameter passing
 
 
-### Global & Local Variables
+###  2.2. <a name='GlobalLocalVariables'></a>Global & Local Variables
 * Variables declared in functions are local to functions
 * Global Variables are declared as `$Global:VarName` which makes it global even if declared in a function
 
@@ -701,15 +737,15 @@ $MyData
 ```
 > Probably better to use the return statement
 
-### Loops
-#### For
+###  2.3. <a name='Loops'></a>Loops
+####  2.3.1. <a name='For'></a>For
 ```PowerShell
 For ($i = 0; $i -lt 5; $i++) {
     Write-Host "Iteration: $i"
 }
 ```
 
-#### Do .. While
+####  2.3.2. <a name='Do..While'></a>Do .. While
 ```PowerShell
 $i = 0
 Do {
@@ -718,7 +754,7 @@ Do {
 
 } While ($i -lt 5) 
 ```
-#### Do ... Until
+####  2.3.3. <a name='Do...Until'></a>Do ... Until
 ```PowerShell
 Do {
     Write-Host "Iteration: $i"
@@ -726,7 +762,7 @@ Do {
 } Until ($i -ge 5)
 ```
 
-#### While ...
+####  2.3.4. <a name='While...'></a>While ...
 ```PowerShell
 $i = 0
 while ($i -lt 5) {
@@ -736,7 +772,7 @@ while ($i -lt 5) {
 }
 ```
 
-#### Do while with break
+####  2.3.5. <a name='Dowhilewithbreak'></a>Do while with break
 ```PowerShell
 $I = 0
 Do {
@@ -748,7 +784,7 @@ Do {
 
 ```
 
-#### ForEach
+####  2.3.6. <a name='ForEach'></a>ForEach
 ```PowerShell
 $Servers = @("Server1", "Server2", "Server3")
 foreach ($Server in $Servers) {
@@ -756,7 +792,7 @@ foreach ($Server in $Servers) {
 }
 ```
 
-### Progress Bars
+###  2.4. <a name='ProgressBars'></a>Progress Bars
 ```PowerShell
 for ($N = 1; $N -le 100; $N++) {
     #Write-Progress -ID 0 "$N% Complete"
@@ -776,7 +812,7 @@ foreach ($N in 1..100) {
 }
 ```
 
-### Switch Statements
+###  2.5. <a name='SwitchStatements'></a>Switch Statements
 ```PowerShell
 Switch ($A) {
     "A" { Write-Host "You entered A" }
@@ -796,7 +832,7 @@ Switch ($A, $B) {
     Default { Write-Host "Invalid input. Please enter letters from A to D." }
 }
 ```
-### Sorting PowerShell Output
+###  2.6. <a name='SortingPowerShellOutput'></a>Sorting PowerShell Output
 
 ```PowerShell
 Get-Process | Sort-Object CPU -desc
@@ -826,7 +862,7 @@ PS > $A.count
 1
 ```
 
-### Building Modules & Stand-Along Functions
+###  2.7. <a name='BuildingModulesStand-AlongFunctions'></a>Building Modules & Stand-Along Functions
 
 ```PowerShell
 # Module file has extension .psm1
@@ -852,8 +888,8 @@ Alternate form seems to be
 Import-Module .\MyModule.psm1
 ```
 
-### Command line args (thanks co-pilot)
-#### Named
+###  2.8. <a name='Commandlineargsthanksco-pilot'></a>Command line args (thanks co-pilot)
+####  2.8.1. <a name='Named'></a>Named
 ```PowerShell
 param (
    [string]$Server = "http://defaultserver",
@@ -870,7 +906,7 @@ if ($Force) { Write-Host "Force mode enabled" }
 \script.ps1 -Server "http://otherserver" -Username admin -Force
 ```
 
-#### Positional
+####  2.8.2. <a name='Positional'></a>Positional
 ```PowerShell
 # script.ps1
 if ($args.Count -lt 2) {
@@ -886,7 +922,7 @@ Copy-Item -Path $source -Destination $destination -Recurse
 \script.ps1 "C:\Source" "D:\Backup"
 ```
 
-### Varargs (thanks co-pilot)
+###  2.9. <a name='Varargsthanksco-pilot'></a>Varargs (thanks co-pilot)
 ```PowerShell
 function Show-Args {
     param(
