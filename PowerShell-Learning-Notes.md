@@ -34,6 +34,7 @@ Brien Posey<br>](https://learning.oreilly.com/course/practical-windows-powershel
 		* 2.8.1. [Named](#Named)
 		* 2.8.2. [Positional](#Positional)
 	* 2.9. [Varargs (thanks co-pilot)](#Varargsthanksco-pilot)
+	* 2.10. [Unit Testing Framework (Pester)](#UnitTestingFrameworkPester)
 
 <!-- vscode-markdown-toc-config
 	numbering=true
@@ -941,3 +942,6 @@ Item: apple
 Item: 42
 Item: True
 ```
+
+###  2.10. <a name='UnitTestingFrameworkPester'></a>Unit Testing Framework (Pester)
+[Pester Unit Testing](https://pester.dev/docs/quick-start)
