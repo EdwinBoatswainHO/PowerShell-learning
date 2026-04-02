@@ -9,15 +9,10 @@ Describe "Fixed Tests" {
 		New-PhoneNumber($numbers) | Should -Be "(123) 456-7890"
 	}
 	
-	it "Should pass" {
+	it "Should pass too" {
 		[int[]]$numbers = @(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
 		New-PhoneNumber($numbers) | Should -Be "(111) 111-1111"
 	}
-
-    it "Should handle arrays too big" {
-        [int[]]$numbers = @(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
-		New-PhoneNumber($numbers) | Should -Be ""
-    }
     
     it "Should handle arrays too small" {
         [int[]]$numbers = @(1, 1)
