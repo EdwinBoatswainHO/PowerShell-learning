@@ -11,9 +11,11 @@ function New-PhoneNumber([int[]]$numbers)
         }
     }
 
-    # return string in the correct format after validation
+    # Use array slicing and join to build the string
 
-    return "($($numbers[0])$($numbers[1])$($numbers[2])) " +
-           "$($numbers[3])$($numbers[4])$($numbers[5])-" +
-           "$($numbers[6])$($numbers[7])$($numbers[8])$($numbers[9])"
+    $areaCode  = $numbers[0..2] -join ''
+    $firstPart = $numbers[3..5] -join ''
+    $LastPart  = $numbers[6..9] -join ''
+
+    return "($areaCode) $firstPart-$lastPart"
 }
