@@ -958,8 +958,14 @@ Full description of what this script does and how to use it.
 .PARAMETER <name>
 Description of the parameter and how to use
 
-.RETURNS
-Description of what the script returns
+.EXAMPLE
+Example usage
+
+.NOTES
+    Author: [Your Name]
+    Date: [YYYY-MM-DD]
+    Version: [Version Number]
+    Additional notes: [Any extra info]
 #>
 ```
 
