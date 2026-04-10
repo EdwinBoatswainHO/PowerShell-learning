@@ -908,3 +908,59 @@ Item: True
 
 ### Unit Testing Framework (Pester)
 [Pester Unit Testing](https://pester.dev/docs/quick-start)
+
+```PowerShell
+Invoke-Pester [-Path path/to/code/with/tests]
+```
+
+## CmdletBinding (Thanks to Ram's code and Co-Pilot)
+The `CmdletBinding` attribute is a powerful feature that allows functions to behave like compiled cmdlets written in C#. This attribute provides acces to cmdlet features, making functions more robust and versatile.
+
+```PowerShell
+function Get-Processes {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory=$false)]
+        [string]$searchRegex
+    )
+}
+```
+
+Applied at the script level this allows a script to take typed parameters and apply them across the whole script.
+
+```PowerShell
+#myscript.ps1
+
+[CmdletBinding()]
+param(
+    [Parameter(Mandatory=$true)]
+    [switch]$dryRun
+)
+
+# yadda yadda yadda ...
+
+if -not $dryRun {
+    Do-Something 
+}
+```
+
+## Better Script / Function Documentation
+
+Multiline commands
+```PowerShell
+<#
+.SYNOPSIS
+An overview of that this script does
+
+.DESCRIPTION
+Full description of what this script does and how to use it.
+
+.PARAMETER <name>
+Description of the parameter and how to use
+
+.RETURNS
+Description of what the script returns
+#>
+```
+
+Use these at the top of scripts and public module functions.
