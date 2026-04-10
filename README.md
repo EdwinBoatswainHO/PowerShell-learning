@@ -826,7 +826,7 @@ PS > $A.count
 1
 ```
 
-### Building Modules & Stand-Along Functions
+### Building Modules & Stand-Alone Functions
 
 ```PowerShell
 # Module file has extension .psm1
