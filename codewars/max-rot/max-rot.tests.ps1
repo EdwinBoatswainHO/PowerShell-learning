@@ -35,15 +35,15 @@ Describe "Get-NDigits" {
     }
 }
 
-# Describe "max-rot" {
-#   Context "Fixed Tests" {
-#     It "Should Pass Fixed Tests" {
-#       $ans = max-rot 38458215
-#       $ans | Should -Be 85821534
-#       $ans = max-rot 195881031
-#       $ans | Should -Be 988103115
-#       $ans = max-rot 16130873362142
-#       $ans | Should -Be 63873362142110
-#     } 
-#   }
-# }
+Describe "max-rot" {
+  Context "Fixed Tests" {
+    It "Should Pass Fixed Tests" {
+      $ans = max-rot 38458215
+      $ans | Should -Be 85821534
+      $ans = max-rot 195881031
+      $ans | Should -Be 988103115
+      $ans = max-rot 16130873362142
+      $ans | Should -Be 63873362142110
+    } 
+  }
+}
